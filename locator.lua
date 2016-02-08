@@ -103,6 +103,7 @@ function LWOG.new()
 	return self;
 end
 
+--[Test to debug and synthax, remove befose use]--
 local toto = LWOG.new();
 toto.forward(2);
 toto.getPosition();
