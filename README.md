@@ -1,6 +1,6 @@
 # turtle-ai
 
-## Description
+## Description __OUTDATEDED__ TODO: fix it
 
 A little IA for your turtle to help you create a room automatically.
 
