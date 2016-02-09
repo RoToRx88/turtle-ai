@@ -1,6 +1,6 @@
 # Turtle-AI
 Just a bunch of code for turtles from the mod ComputerCraft of Tekkit Legends mods Pack.
-You can find some scripts like room creation scripts, or autnomous localisation system.## Installation
+You can find some scripts like room creation scripts, or autnomous localisation system.
 
 ## Contributing
 1. Fork it!
