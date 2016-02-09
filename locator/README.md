@@ -1,4 +1,4 @@
-# turtle-ai
+# LWOG (for Location WithOutGPS)
 
 ## Description
 
