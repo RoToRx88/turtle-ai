@@ -1,8 +1,8 @@
---[[Version 1.0]]--
-
 local go_forward = true
+local looping = true
 
 function fuelCheck()
+  print("Checking fuel.")
   local fuelLevel = turtle.getFuelLevel()
   if fuelLevel < 16 then
     turtle.select(1)
@@ -12,6 +12,7 @@ function fuelCheck()
 end
 
 function chopTree()
+  print("ChopTree()")
   local success, data = turtle.inspect()
   if data.name == "minecraft:log" then
     print("Tree detected.")
@@ -28,10 +29,15 @@ function chopTree()
     while turtle.detectDown() == false do
       turtle.down()
     end
+    local s_end, d_end = turtle.inspect()
+    if d_end.name == "minecraft:cobblestone" then
+      looping = false
+    end
   end
 end
 
 function perform_rotation()
+  print("perform_rotation now running")
   if go_forward then
     turtle.turnLeft()
     turtle.forward()
@@ -49,20 +55,20 @@ function perform_rotation()
   end
 end
 
-local looping = true
 while looping do
   fuelCheck()
   chopTree()
   turtle.forward()
   turtle.forward()
-  local ok, data_block = turtle.inspect()
-  if data_block.name ~= "minecraft:log" then
-    write("No tree detected. 1: perform_rotation; 0: Stop.")
-    local what_to_do = tonumber(read())
-    if what_to_do == 1 then
-      perform_rotation()
-      elseif what_to_do == 0 then
-        looping = false
-      end
+  turtle.forward()
+  local s_down, d_down = turtle.inspectDown()
+  if d_down.name ~= "minecraft:sapling" then
+    print("No sapling found. Rotate to clean next line")
+    perform_rotation()
+  end
+  local s_front, d_front = turtle.inspect()
+  if d_front.name == "minecraft:leaves" then
+    print("Digging leaves")
+    turtle.dig()
   end
 end
