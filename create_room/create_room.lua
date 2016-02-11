@@ -5,12 +5,21 @@ local size_y = tonumber(read())
 write("z (top) : ")
 local size_z = tonumber(read())
 
-turtle.refuel()
+function fuelCheck()
+  local fuelLevel = turtle.getFuelLevel()
+  if fuelLevel < 16 then
+    turtle.select(1)
+    turtle.refuel(1)
+    print("Refueled!")
+  end
+end
+
 for z = 1, size_z do
 	local go_forward = true
 
 	for i = 1, size_y do
 		for x = 1, size_x - 1 do
+			fuelCheck()
 			turtle.dig()
 			turtle.forward()
 		end
