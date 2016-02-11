@@ -23,15 +23,20 @@ function chopTree()
     turtle.placeDown()
     turtle.select(1)
     while turtle.detectUp() == true do
-      turtle.digUp()
-      turtle.up()
+      success, data = turtle.inspectUp()
+      if data.name ~= "minecraft:log" then
+        break
+      else
+       turtle.digUp()
+       turtle.up()
+      end
     end
     while turtle.detectDown() == false do
       turtle.down()
     end
-    local s_end, d_end = turtle.inspect()
-    if d_end.name == "minecraft:cobblestone" then
-      looping = false
+    success, data = turtle.inspectDown()
+    if data.name == "minecraft:dirt" then
+      turtle.up()
     end
   end
 end
@@ -55,20 +60,51 @@ function perform_rotation()
   end
 end
 
+function back_home()
+  turtle.turnLeft()
+  local s_front, d_front = turtle.inspect()
+  if d_front.name == "minecraft:leaves" then
+    turtle.dig()
+  end
+  turnLeft.forward()
+  turtle.turnRight()
+  for i = 1, 7 do
+  s_front, d_front = turtle.inspect()
+  if d_front.name == "minecraft:leaves" then
+    turtle.dig()
+  end
+    turtle.forward()
+  end
+  turtle.turnLeft()
+  for i = 1, 13 do
+  s_front, d_front = turtle.inspect()
+  if d_front.name == "minecraft:leaves" then
+    turtle.dig()
+  end
+    turtle.forward()
+  end
+  turtle.turnLeft()
+end
+
 while looping do
   fuelCheck()
   chopTree()
   turtle.forward()
   turtle.forward()
   turtle.forward()
-  local s_down, d_down = turtle.inspectDown()
-  if d_down.name ~= "minecraft:sapling" then
-    print("No sapling found. Rotate to clean next line")
-    perform_rotation()
-  end
   local s_front, d_front = turtle.inspect()
   if d_front.name == "minecraft:leaves" then
     print("Digging leaves")
     turtle.dig()
+  elseif d_front.name == "minecraft:stone" then
+    print("Wall detected, rotating")
+    perform_rotation()
+  elseif d_front.name == "minecraft:cobblestone" then
+    back_home()
   end
+--[[  local s_down, d_down = turtle.inspectDown()
+  if d_down.name ~= "minecraft:sapling" then
+    print("No sapling found. Rotate to clean next line")
+    perform_rotation()
+  end]]--
 end

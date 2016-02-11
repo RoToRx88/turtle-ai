@@ -123,6 +123,27 @@ All the positions and the heading are relative to the initial position of the tu
 		print("orientation: ", heading);
 	end
 
+	function self.getPosition()
+		return (position_x, position_y, position_z);
+	end
+
+	function self.goToX(dest)
+		local distance = dest - position_x;
+		if (distance == 0) then
+			print("[ ERROR  ] goToX: nil distance");
+		elseif (distance > 0) then
+			while (heading ~= 0) do
+				turnRight(1);
+			end
+		elseif (distance < 0) then
+			distance = distance * -1;
+				while (heading ~= 2) do
+					turnRight(1);
+				end
+		end
+		forward(distance);
+	end
+
 	function self.goToX(dest)
 		local distance = dest - position_x;
 		if (distance == 0) then
