@@ -81,6 +81,9 @@ All the positions and the heading are relative to the initial position of the tu
 	function self.up(how_much)
 		if (how_much <= 0) then
 			print("Don't move.");
+		else
+			print("Up for");
+			print(how_much);
 		end
 		for i = 1, how_much do
 			turtle.up();
@@ -89,13 +92,15 @@ All the positions and the heading are relative to the initial position of the tu
 	end
 
 	function self.down(how_much)
+		local last_state = false;
 		if (how_much <= 0) then
 			print("Don't move.");
 		end
 		for i = 1, how_much do
-			turtle.down();
+			last_state = turtle.down();
 			self.updatePosition("down");
 		end
+		return last_state;
 	end
 
 	function self.turnLeft(how_much)
@@ -123,26 +128,103 @@ All the positions and the heading are relative to the initial position of the tu
 		print("orientation: ", heading);
 	end
 
+	function self.getPosition()
+		return position_x, position_y, position_z;
+	end
+
 	function self.goToX(dest)
 		local distance = dest - position_x;
 		if (distance == 0) then
 			print("[ ERROR  ] goToX: nil distance");
 		elseif (distance > 0) then
 			while (heading ~= 0) do
-				turnRight(1);
+				self.turnRight(1);
 			end
 		elseif (distance < 0) then
 			distance = distance * -1;
 				while (heading ~= 2) do
-					turnRight(1);
+					self.turnRight(1);
 				end
 		end
-		forward(distance);
+		print("goToX: ");
+		print(distance);
+		self.forward(distance);
 	end
+
+	function self.goToY(dest)
+		local distance = dest - position_y;
+		if (distance == 0) then
+			print("[ ERROR  ] goToY: nil distance");
+		elseif (distance > 0) then
+			while (heading ~= 1) do
+				self.fuelCheck();
+				self.turnRight(1);
+			end
+		elseif (distance < 0) then
+			distance = distance * -1;
+				while (heading ~= 1) do
+					self.fuelCheck();
+					self.turnRight(1);
+				end
+		end
+		print("goToY: ");
+		print(distance);
+		self.forward(distance);
+	end
+
+	function self.goTo(destX, destY)
+		self.goToX(destX);
+		self.goToY(destY);
+	end
+
+	function self.fuelCheck()
+	  local fuelLevel = turtle.getFuelLevel()
+	  if fuelLevel < 16 then
+	    turtle.select(1)
+	    turtle.refuel(1)
+	    print("Refueled!")
+	  end
+end
 
 	return self;
 end
 
---[[Here start the code for optimized_mining]]--
+function inspect_column(t)
+	local deep = 0;
+	turtle.digDown();
+	while (t.down(1)) do
+		deep = deep + 1;
+		t.fuelCheck();
+		turtle.digDown();
+		for i = 0, 3 do -- No need to rotate 4 time, just 3
+			local s, d = turtle.inspect();
+			if (d.name ~= "minecraft:stone" and d.name ~= "minecraft:cobblestone" and d.name ~= "minecraft:dirt" and d.name ~= "minecraft:gravel") then
+				turtle.dig();
+			end
+			t.turnRight(1);
+		end
+	end
+	t.up(deep);
+end
+
+
+--[[---------------- Here start the code for optimized_mining ----------------]]--
 local t = LWOG.new();
 
+t.fuelCheck();
+local x, y, z = t.getPosition();
+for i = 0, 3 do
+	x, y, z = t.getPosition();
+	t.fuelCheck();
+	inspect_column(t);
+	t.goTo(x + 2, y + 1);
+end
+t.goTo(x - 1, y + 2);
+inspect_column(t);
+--[[
+for i = 0, 5 do
+	x, y, z = t.getPosition();
+	t.fuelCheck();
+	inspect_column();
+	t.goTo(x - 2, y - 1);
+end]]--

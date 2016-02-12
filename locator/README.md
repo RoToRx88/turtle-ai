@@ -27,3 +27,8 @@ LWOG.forward(8);
 ## Contribution
 
 You are free to contribute to the project, just fork it, code, and do a merge request :)
+
+## TODO
+
+* Get turtle command return state
+* Add fuel managment in deplacment

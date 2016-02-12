@@ -161,6 +161,28 @@ All the positions and the heading are relative to the initial position of the tu
 		forward(distance);
 	end
 
+	function self.goToY(dest)
+		local distance = dest - position_y;
+		if (distance == 0) then
+			print("[ ERROR  ] goToY: nil distance");
+		elseif (distance > 0) then
+			while (heading ~= 1) do
+				turnRight(1);
+			end
+		elseif (distance < 0) then
+			distance = distance * -1;
+				while (heading ~= 1) do
+					turnRight(1);
+				end
+		end
+		forward(distance);
+	end
+
+	function self.goTo(destX, destY)
+		goToX(destX);
+		goToY(destY);
+	end
+
 	return self;
 end
 
