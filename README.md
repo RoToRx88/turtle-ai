@@ -8,3 +8,6 @@ You can find some scripts like room creation scripts, or autnomous localisation 
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
+
+## TODO
+* AI that create a way through the world

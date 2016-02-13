@@ -80,7 +80,7 @@ All the positions and the heading are relative to the initial position of the tu
 
 	function self.up(how_much)
 		if (how_much <= 0) then
-			print("Don't move.");
+			print("Up: Don't move.");
 		else
 			print("Up for");
 			print(how_much);
@@ -172,6 +172,22 @@ All the positions and the heading are relative to the initial position of the tu
 		self.forward(distance);
 	end
 
+	function self.goToZ(dest)
+		local distance = dest - position_z;
+		if  (distance == 0) then
+			print("[ ERROR  ] goToZ: nil distance");
+		elseif (distance > 0) then
+			print("goToZ: ");
+			print(distance);
+			turtle.up(distance);
+		elseif (distance < 0) then
+			distance = distance * -1;
+			print("goToZ: ");
+			print(distance);
+			turtle.up(distance);
+		end
+	end
+
 	function self.goTo(destX, destY)
 		self.goToX(destX);
 		self.goToY(destY);
@@ -190,12 +206,11 @@ end
 end
 
 function inspect_column(t)
-	local deep = 0;
 	turtle.digDown();
 	while (t.down(1)) do
-		deep = deep + 1;
 		t.fuelCheck();
 		turtle.digDown();
+		print("Digging down");
 		for i = 0, 3 do -- No need to rotate 4 time, just 3
 			local s, d = turtle.inspect();
 			if (d.name ~= "minecraft:stone" and d.name ~= "minecraft:cobblestone" and d.name ~= "minecraft:dirt" and d.name ~= "minecraft:gravel") then
@@ -204,7 +219,7 @@ function inspect_column(t)
 			t.turnRight(1);
 		end
 	end
-	t.up(deep);
+	t.goToZ(0);
 end
 
 

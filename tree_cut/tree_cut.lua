@@ -19,7 +19,7 @@ function chopTree()
     turtle.dig()
     turtle.forward()
     turtle.digDown()
-    turtle.select(3)
+    turtle.select(2)
     turtle.placeDown()
     turtle.select(1)
     while turtle.detectUp() == true do
@@ -61,30 +61,34 @@ function perform_rotation()
 end
 
 function back_home()
-  turtle.turnLeft()
-  local s_front, d_front = turtle.inspect()
+  fuelCheck();
+  print("Going @home");
+  turtle.turnLeft();
+  local s_front, d_front = turtle.inspect();
   if d_front.name == "minecraft:leaves" then
-    turtle.dig()
+    turtle.dig();
   end
-  turnLeft.forward()
-  turtle.turnRight()
+  turtle.forward();
+  turtle.turnRight();
   for i = 1, 7 do
-  s_front, d_front = turtle.inspect()
-  if d_front.name == "minecraft:leaves" then
-    turtle.dig()
-  end
-    turtle.forward()
-  end
-  turtle.turnLeft()
-  for i = 1, 13 do
-  s_front, d_front = turtle.inspect()
-  if d_front.name == "minecraft:leaves" then
-    turtle.dig()
-  end
-    turtle.forward()
+    fuelCheck();
+    if (turtle.forward() == false) then
+      turtle.dig();
+      turtle.forward();
+    end
   end
   turtle.turnLeft()
+  for i = 1, 14 do
+    fuelCheck();
+    if (turtle.forward() == false) then
+      turtle.dig();
+      turtle.forward();
+    end
+  end
+  turtle.turnLeft();
 end
+
+
 
 while looping do
   fuelCheck()
@@ -102,9 +106,4 @@ while looping do
   elseif d_front.name == "minecraft:cobblestone" then
     back_home()
   end
---[[  local s_down, d_down = turtle.inspectDown()
-  if d_down.name ~= "minecraft:sapling" then
-    print("No sapling found. Rotate to clean next line")
-    perform_rotation()
-  end]]--
 end
