@@ -14,7 +14,7 @@ end
 function chopTree()
   print("ChopTree()")
   local success, data = turtle.inspect()
-  if data.name == "minecraft:log" then
+  if data.name == "minecraft:oak_log" then
     print("Tree detected.")
     turtle.dig()
     turtle.forward()
@@ -24,7 +24,7 @@ function chopTree()
     turtle.select(1)
     while turtle.detectUp() == true do
       success, data = turtle.inspectUp()
-      if data.name ~= "minecraft:log" then
+      if data.name ~= "minecraft:oak_log" then
         break
       else
        turtle.digUp()
